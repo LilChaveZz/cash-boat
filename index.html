@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashBoat - Educación Financiera Gratuita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f0f8ff;
+            color: #2c3e50;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            padding-bottom: 120px; /* Espacio para las olas */
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            color: #1a73e8;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .logo span {
+            color: #2c3e50;
+        }
+
+        .hero {
+            padding: 4rem 0;
+            background: linear-gradient(45deg, #ffffff, #f0f8ff);
+            border-radius: 15px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #1a73e8;
+        }
+
+        .cta {
+            background: #1a73e8;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .cta:hover {
+            transform: translateY(-3px);
+        }
+
+        .coming-soon {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #4a5568;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            flex: 1;
+            min-width: 250px;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .newsletter {
+            margin: 3rem 0;
+        }
+
+        input[type="email"] {
+            padding: 1rem;
+            width: 300px;
+            border: 2px solid #1a73e8;
+            border-radius: 25px;
+            margin: 1rem;
+        }
+
+        footer {
+            margin-top: 4rem; /* Más espacio antes del copyright */
+            padding: 2rem 0;
+            color: #4a5568;
+        }
+
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg"><path fill="%231a73e8" d="M0 100Q250 50 500 100t500 0Q750 150 500 200T0 200Z"/></svg>');
+            background-size: cover;
+            z-index: -1;
+            animation: waveAnimation 12s infinite linear;
+        }
+
+        @keyframes waveAnimation {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1000px; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                padding-bottom: 100px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .waves {
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="waves"></div>
+    
+    <div class="container">
+        <nav>
+            <div class="logo">Cash<span>Boat</span></div>
+        </nav>
+
+        <div class="hero">
+            <h1>Navegando hacia tu libertad financiera</h1>
+            <p class="coming-soon">¡Próximamente zarpamos!</p>
+            <p>Únete a nuestra lista de espera y sé el primero en acceder<br>a nuestros cursos gratuitos de educación financiera</p>
+            
+            <div class="newsletter">
+                <input type="email" placeholder="Ingresa tu correo electrónico">
+                <a href="#" class="cta">¡Quiero subir a bordo!</a>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-item">
+                <h3>🚤 Cursos prácticos</h3>
+                <p>Aprende con ejemplos de la vida real</p>
+            </div>
+            <div class="feature-item">
+                <h3>🧭 Guías expertas</h3>
+                <p>Navega seguro con nuestras herramientas</p>
+            </div>
+            <div class="feature-item">
+                <h3>⚓ Comunidad</h3>
+                <p>Conéctate con otros navegantes financieros</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 CashBoat - cash-boat.com</p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelector('.cta').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('¡Gracias por unirte! Te avisaremos cuando estemos listos para zarpar.');
+        });
+    </script>
+</body>
+</html>
