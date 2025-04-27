@@ -24,6 +24,8 @@ h1, h2, h3 {
     font-weight: 500; /* Peso medio para botones */
 }
 
+
+
 /* Barra de navegación */
 .main-nav {
     background: rgba(255, 255, 255, 0.95);
@@ -58,9 +60,28 @@ h1, h2, h3 {
     letter-spacing: -0.5px;
 }
 
+.logo-text {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cash {
+    color: #1a73e8; /* Azul original */
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+.boat {
+    color: #2c3e50; /* Gris oscuro */
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+}
+
 .nav-logo {
-    height: 45px;
-    width: auto;
+    height: 40px;
+    margin-left: 10px;
     filter: drop-shadow(0 2px 4px rgba(26, 115, 232, 0.2));
 }
 
