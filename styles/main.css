@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f0f8ff;
+    color: #2c3e50;
+    line-height: 1.6;
+    position: relative;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    padding-bottom: 120px;
+}
+
+.logo {
+    font-size: 2.5rem;
+    color: #1a73e8;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.logo span {
+    color: #2c3e50;
+}
+
+.hero {
+    padding: 4rem 0;
+    background: linear-gradient(45deg, #ffffff, #f0f8ff);
+    border-radius: 15px;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #1a73e8;
+}
+
+.cta {
+    background: #1a73e8;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.cta:hover {
+    transform: translateY(-3px);
+}
+
+.coming-soon {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #4a5568;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    flex: 1;
+    min-width: 250px;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.newsletter {
+    margin: 3rem 0;
+}
+
+input[type="email"] {
+    padding: 1rem;
+    width: 300px;
+    border: 2px solid #1a73e8;
+    border-radius: 25px;
+    margin: 1rem;
+}
+
+footer {
+    margin-top: 4rem;
+    padding: 2rem 0;
+    color: #4a5568;
+}
+
+.wave-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.waves-svg {
+    display: block;
+    width: 200%;
+    height: 200px;
+    animation: waveAnimation 10s linear infinite;
+}
+
+@keyframes waveAnimation {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 768px) {
+    .waves-svg {
+        height: 150px;
+        animation-duration: 8s;
+    }
+}
+
+@media (max-width: 480px) {
+    .waves-svg {
+        height: 120px;
+        animation-duration: 6s;
+    }
+}
