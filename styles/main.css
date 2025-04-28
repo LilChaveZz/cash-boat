@@ -1,41 +1,32 @@
-/* styles/main.css */
 :root {
     --primary-blue: #1a73e8;
-    --dark-text: #2c3e50;
+    --secondary-blue: #2c3e50;
     --pure-white: #ffffff;
+    --light-bg: #f5f9fc;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    font-weight: 300; /* Peso ligero por defecto */
+    padding-top: 80px; /* Espacio para la barra fija */
+    color: var(--secondary-blue);
+    background-color: var(--light-bg);
 }
-
-h1, h2, h3 {
-    font-weight: 700; /* Peso en negrita para títulos */
-}
-
-.cta {
-    font-weight: 500; /* Peso medio para botones */
-}
-
-
 
 /* Barra de navegación */
 .main-nav {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
     padding: 1rem 0;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .nav-container {
@@ -53,64 +44,52 @@ h1, h2, h3 {
     gap: 12px;
 }
 
-.brand-text {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary-blue);
-    letter-spacing: -0.5px;
-}
-
 .logo-text {
     display: flex;
     align-items: center;
-    gap: 5px;
 }
 
 .cash {
-    color: #1a73e8; /* Azul original */
+    color: var(--primary-blue);
     font-weight: 700;
     font-size: 1.8rem;
 }
 
 .boat {
-    color: #2c3e50; /* Gris oscuro */
+    color: var(--secondary-blue);
     font-weight: 700;
     font-size: 1.8rem;
-    letter-spacing: -0.5px;
 }
 
 .nav-logo {
     height: 40px;
     margin-left: 10px;
-    filter: drop-shadow(0 2px 4px rgba(26, 115, 232, 0.2));
 }
 
-.central-menu {
+/* Menú central */
+.nav-pill {
     background: var(--primary-blue);
-    padding: 10px 35px;
+    padding: 0.8rem 2rem;
     border-radius: 30px;
     display: flex;
-    gap: 2.5rem;
-    margin: 0 2rem;
+    gap: 2rem;
 }
 
-.central-menu a {
+.nav-pill a {
     color: var(--pure-white);
     text-decoration: none;
     font-weight: 500;
     transition: opacity 0.3s ease;
-    font-size: 0.95rem;
 }
 
-.central-menu a:hover {
+.nav-pill a:hover {
     opacity: 0.9;
-    text-decoration: underline;
 }
 
 .nav-button {
     background: var(--pure-white);
-    color: var(--dark-text);
-    padding: 0.8rem 2.2rem;
+    color: var(--primary-blue);
+    padding: 0.8rem 2rem;
     border-radius: 25px;
     text-decoration: none;
     font-weight: 600;
@@ -121,59 +100,134 @@ h1, h2, h3 {
 .nav-button:hover {
     background: var(--primary-blue);
     color: var(--pure-white);
-    transform: translateY(-2px);
 }
 
-/* Sección Hero */
+/* Hero Section */
 .hero {
-    margin-top: 80px;
-    min-height: 70vh;
+    min-height: calc(100vh - 80px);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 2rem;
     background: url('../images/hero-bg.jpg') center/cover;
 }
 
-.hero-content h1 {
-    font-size: 3.2rem;
-    color: var(--dark-text);
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    color: var(--primary-blue);
     margin-bottom: 1.5rem;
 }
 
-.hero-content p {
+.hero-subtitle {
     font-size: 1.4rem;
-    color: var(--dark-text);
-    margin-bottom: 2.5rem;
+    color: var(--secondary-blue);
+    margin-bottom: 2rem;
 }
 
-.hero-cta {
+.hero-cta-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.cta-primary, .cta-secondary {
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform 0.3s ease;
+}
+
+.cta-primary {
     background: var(--primary-blue);
     color: var(--pure-white);
-    padding: 1.2rem 3rem;
-    border-radius: 30px;
-    font-size: 1.1rem;
-    box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
 }
 
-/* Responsive Design */
+.cta-secondary {
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+/* Sección Misión */
+.mission-section {
+    padding: 4rem 2rem;
+}
+
+.mission-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.mission-image img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.mission-text h2 {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 1.5rem;
+}
+
+/* Sección Contenido */
+.content-section {
+    padding: 4rem 2rem;
+    background: var(--pure-white);
+}
+
+.content-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.content-card {
+    padding: 2rem;
+    border-radius: 15px;
+    background: var(--light-bg);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.content-card:hover {
+    transform: translateY(-10px);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
-        gap: 1.2rem;
-        padding: 1rem;
+        gap: 1rem;
     }
-
-    .central-menu {
+    
+    .nav-pill {
         flex-wrap: wrap;
         justify-content: center;
         padding: 0.8rem;
-        gap: 1.2rem;
-        margin: 0;
     }
-
-    .hero-content h1 {
-        font-size: 2.4rem;
+    
+    .mission-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
     }
 }
