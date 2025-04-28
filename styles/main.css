@@ -253,6 +253,66 @@ body {
     margin-bottom: 1rem;
 }
 
+.recommendations-section {
+    padding: 4rem 2rem;
+    background: var(--light-bg);
+}
+
+.recommendations-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.recommendation-card {
+    text-align: center;
+    width: 250px;
+}
+
+.round-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+    border: 4px solid var(--primary-blue);
+}
+
+/* Sección Equipo */
+.team-section {
+    padding: 4rem 2rem;
+}
+
+.team-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+}
+
+.team-card {
+    background: var(--pure-white);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.position {
+    color: var(--primary-blue);
+    font-weight: 500;
+    margin: 0.5rem 0;
+}
+
+.bio {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .nav-container {
@@ -286,5 +346,19 @@ body {
         width: 100%;
         max-width: 300px;
         margin: 0 auto;
+    }
+
+    .recommendations-grid {
+        gap: 2rem;
+    }
+    
+    .round-img {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
     }
 }
