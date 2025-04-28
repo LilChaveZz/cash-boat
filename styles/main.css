@@ -110,29 +110,46 @@ body {
     justify-content: center;
     text-align: center;
     padding: 2rem;
-    background: url('../images/hero-bg.jpg') center/cover;
+    position: relative;
+    background: url('../images/hero-bg.jpg') center/cover no-repeat;
+}
+
+.hero::before {
+    display: none; /* Elimina el overlay */
 }
 
 .hero-content {
+    position: relative;
+    z-index: 2;
     max-width: 800px;
+    margin: 0 auto;
 }
 
 .hero h1 {
-    font-size: 3rem;
-    color: var(--primary-blue);
-    margin-bottom: 1.5rem;
+    font-size: 2.8rem;
+    color: var(--secondary-blue);
+    margin-bottom: 1.2rem;
+    line-height: 1.3;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-subtitle {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: var(--secondary-blue);
-    margin-bottom: 2rem;
+    margin-bottom: 3rem; /* Aumenté el espacio inferior */
+    font-weight: 400;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
 }
 
 .hero-cta-group {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+    margin-top: 2rem; /* Espacio adicional arriba de los botones */
+    gap: 1.5rem; /* Separación entre botones */
 }
 
 .cta-primary, .cta-secondary {
@@ -168,7 +185,11 @@ body {
 }
 
 .mission-image img {
-    width: 100%;
+    width: 55%; /* Reducción del tamaño */
+    max-width: 600px; /* Tamaño máximo */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Centrado horizontal */
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
@@ -183,6 +204,28 @@ body {
 .content-section {
     padding: 4rem 2rem;
     background: var(--pure-white);
+}
+
+.section-title {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem; /* Asegura espacio en móviles */
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.section-title p {
+    font-size: 1.2rem;
+    color: var(--secondary-blue);
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .content-grid {
@@ -229,5 +272,19 @@ body {
     
     .hero h1 {
         font-size: 2.2rem;
+        padding: 0 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .hero-cta-group {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
     }
 }
