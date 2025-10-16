@@ -1,6 +1,7 @@
 // js/script.js
 window.addEventListener('scroll', function() {
     const nav = document.querySelector('.main-nav');
+    if (!nav) return;
     if (window.scrollY > 50) {
         nav.classList.add('scrolled');
     } else {
@@ -10,8 +11,12 @@ window.addEventListener('scroll', function() {
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return; // evita errores si el id no existe
         e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
+        target.scrollIntoView({
             behavior: 'smooth'
         });
     });

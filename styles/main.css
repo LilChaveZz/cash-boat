@@ -148,6 +148,8 @@ body {
 }
 
 .hero-cta-group {
+    display: flex; /* activar gap y dirección */
+    justify-content: center;
     margin-top: 2rem; /* Espacio adicional arriba de los botones */
     gap: 1.5rem; /* Separación entre botones */
 }
@@ -361,4 +363,11 @@ body {
         grid-template-columns: 1fr;
         max-width: 400px;
     }
+}
+
+/* Estilos cuando se hace scroll */
+.main-nav.scrolled {
+    padding: 0.5rem 0;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.12);
 }
