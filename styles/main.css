@@ -3,6 +3,7 @@
     --secondary-blue: #2c3e50;
     --pure-white: #ffffff;
     --light-bg: #f5f9fc;
+    --nav-height: 0px; /* updated by JS */
 }
 
 * {
@@ -13,7 +14,7 @@
 }
 
 body {
-    padding-top: 80px; /* Espacio para la barra fija */
+    padding-top: 0; /* removed fixed top padding — JS sets it dynamically */
     color: var(--secondary-blue);
     background-color: var(--light-bg);
 }
@@ -27,6 +28,7 @@ body {
     z-index: 1000;
     padding: 1rem 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: background-color 200ms ease, box-shadow 200ms ease, backdrop-filter 200ms ease;
 }
 
 .nav-container {
@@ -104,7 +106,8 @@ body {
 
 /* Hero Section */
 .hero {
-    min-height: calc(100vh - 80px);
+    /* use nav height variable so hero sizing matches dynamic nav on mobile */
+    min-height: calc(100vh - var(--nav-height));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -367,7 +370,17 @@ body {
 
 /* Estilos cuando se hace scroll */
 .main-nav.scrolled {
-    padding: 0.5rem 0;
-    backdrop-filter: blur(6px);
+    background: rgba(255,255,255,0.98);
     box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+}
+
+/* Ensure sections respect nav height when browsers scroll them into view */
+section, header {
+    scroll-margin-top: var(--nav-height);
+}
+
+/* Ensure nav height is stable — avoid height/padding transitions that shift layout */
+.main-nav {
+    padding: 1rem 0; /* base padding */
+    transition: background-color 200ms ease, box-shadow 200ms ease, backdrop-filter 200ms ease;
 }
