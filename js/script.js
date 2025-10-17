@@ -43,13 +43,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         // ensure nav height / CSS var is up-to-date before calculating scroll
         adjustBodyPaddingForNav();
 
-        // wait two animation frames so layout (fonts, mobile UI) can settle
+        // wait two animation frames so layout (fonts, mobile UI) can settle,
+        // which is crucial for the initial load and hash change for accurate height.
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-        // recompute after frames
+        // Recompute after frames to get the final, stable height
         adjustBodyPaddingForNav();
         const nav = document.querySelector('.main-nav');
         const navHeight = nav ? nav.offsetHeight : 0;
+        
+        // Calculate the target position. We subtract the nav height to account for the fixed header.
         const targetY = Math.max(0, target.getBoundingClientRect().top + window.scrollY - navHeight);
 
         window.scrollTo({
@@ -58,10 +61,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
 
         // update the URL fragment without jumping
+        // update the URL fragment without jumping
         if (history && history.pushState) {
             history.pushState(null, '', href);
         } else {
             location.hash = href;
+        }
+        
+        // Handle initial load hash to scroll to the correct position
+        if (window.location.hash && window.location.hash === href) {
+            // If the hash is already in the URL, the browser might have scrolled,
+            // so we re-scroll to the corrected position.
+            window.scrollTo({
+                top: targetY,
+                behavior: 'smooth'
+            });
         }
     });
 });
