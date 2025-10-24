@@ -200,7 +200,11 @@ function adjustBodyPaddingForNav() {
     const nav = document.querySelector('.main-nav');
     if (!nav) return;
     const h = nav.offsetHeight;
+    // Expose nav height to CSS and also set body's top padding so pages
+    // without special hero logic don't get their content overlapped by the
+    // fixed navbar. If nav isn't found, we explicitly clear the padding.
     document.documentElement.style.setProperty('--nav-height', `${h}px`);
+    document.body.style.paddingTop = `${h}px`;
 }
 
 function renderDynamicNavbar() {
