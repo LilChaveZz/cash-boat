@@ -1,10 +1,18 @@
-// js/auth.js
+// js/auth.js (Refactored to include common site logic)
 
 // --- Constants ---
 const USERS_KEY = 'cb_users';
 const SESSION_KEY = 'cb_session';
-const REDIRECT_URL = '/auth/login.html';
+const REDIRECT_URL = 'auth/login.html';
 const HOME_URL = 'index.html';
+
+// --- Navbar Links ---
+const NAV_LINKS = [
+    { href: 'index.html', text: 'Inicio' },
+    { href: 'educacion.html', text: 'Educación' },
+    { href: 'proyeccion.html', text: 'Proyección' },
+    { href: 'comparacion.html', text: 'Comparación' }
+];
 
 // --- Utility Functions ---
 
@@ -147,6 +155,7 @@ function updateUser(user) {
 
 // Export for use in other files
 window.auth = {
+    renderDynamicNavbar,
     generateSalt,
     hashPassword,
     saveUser,
@@ -163,8 +172,105 @@ window.auth = {
     HOME_URL
 };
 
-// Immediately check for auth on protected pages
-// This will be called on profile.html
+// --- Dynamic Navbar and Common Site Logic (from original script.js) ---
+
+function adjustBodyPaddingForNav() {
+    const nav = document.querySelector('.main-nav');
+    if (!nav) return;
+    const h = nav.offsetHeight;
+    document.documentElement.style.setProperty('--nav-height', `${h}px`);
+}
+
+function renderDynamicNavbar() {
+    const navContainer = document.querySelector('.nav-pill');
+    // The button container is the direct parent of the nav-button in the HTML
+    const navButton = document.querySelector('.nav-button');
+    const navButtonContainer = navButton ? navButton.parentElement : null;
+    const currentUser = getCurrentUser();
+
+    if (!navContainer || !navButtonContainer) return;
+
+    // 1. Render main links
+    navContainer.innerHTML = NAV_LINKS.map(link => 
+        `<a href="${link.href}">${link.text}</a>`
+    ).join('');
+
+    // 2. Render dynamic button (Login/Signup or Profile)
+    if (currentUser) {
+        // Logged in: Show Profile button
+        navButtonContainer.innerHTML = 
+            `<a href="settings.html" class="nav-button">Perfil</a>`;
+    } else {
+        // Logged out: Show Empezar (Login/Signup) button
+        navButtonContainer.innerHTML = 
+            `<a href="auth/signup.html" class="nav-button">Empezar</a>`;
+    }
+}
+
+// --- Event Listeners and Initial Load ---
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Only run on pages that have the full navbar structure
+    if (document.querySelector('.main-nav')) {
+        renderDynamicNavbar();
+        adjustBodyPaddingForNav();
+    }
+});
+window.addEventListener('load', adjustBodyPaddingForNav); 
+window.addEventListener('resize', adjustBodyPaddingForNav);
+
+let ticking = false;
+window.addEventListener('scroll', function() {
+    const nav = document.querySelector('.main-nav');
+    if (!nav) return;
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+    // Avoid forcing layout on every scroll frame — batch with rAF
+    if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+            adjustBodyPaddingForNav();
+            ticking = false;
+        });
+    }
+});
+
+// Smooth Scroll Logic (Only for index.html fragments)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', async function (e) {
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        // Only run smooth scroll logic if the target is on the same page (index.html)
+        if (!target || window.location.pathname.endsWith('index.html') === false) return;
+        
+        e.preventDefault();
+
+        adjustBodyPaddingForNav();
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        adjustBodyPaddingForNav();
+        
+        const nav = document.querySelector('.main-nav');
+        const navHeight = nav ? nav.offsetHeight : 0;
+        const targetY = Math.max(0, target.getBoundingClientRect().top + window.scrollY - navHeight);
+
+        window.scrollTo({
+            top: targetY,
+            behavior: 'smooth'
+        });
+
+        if (history && history.pushState) {
+            history.pushState(null, '', href);
+        } else {
+            location.hash = href;
+        }
+    });
+});
+
+// --- Auth Protection ---
 if (document.body.classList.contains('protected')) {
     requireAuth();
 }

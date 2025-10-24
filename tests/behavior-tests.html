@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavior Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #1a73e8; }
+        .test-result { margin-top: 10px; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #e6ffe6; border: 1px solid #52c41a; color: #52c41a; }
+        .fail { background-color: #ffe6e6; border: 1px solid #ff4d4f; color: #ff4d4f; }
+    </style>
+</head>
+<body>
+    <h1>CashBoat Behavior Tests</h1>
+    <p>Open the console (F12) to see detailed test results.</p>
+    <div id="results"></div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/settings.js"></script>
+    <script src="../js/proyeccion.js"></script>
+    <script src="../js/comparacion.js"></script>
+    <script>
+        const resultsDiv = document.getElementById('results');
+        let testsPassed = 0;
+        let testsFailed = 0;
+
+        function assert(condition, message) {
+            const result = condition ? 'PASS' : 'FAIL';
+            const className = condition ? 'pass' : 'fail';
+            const logMessage = `[${result}] ${message}`;
+
+            const p = document.createElement('p');
+            p.className = `test-result ${className}`;
+            p.textContent = logMessage;
+            resultsDiv.appendChild(p);
+
+            if (condition) {
+                testsPassed++;
+            } else {
+                testsFailed++;
+            }
+            console.log(logMessage);
+        }
+
+        async function runBehaviorTests() {
+            console.log('--- Running Behavior Tests ---');
+            localStorage.clear(); // Start with a clean slate
+            
+            // --- Test 1: Default Settings Load ---
+            const defaultSettings = settings.getSettings('nonexistent@user.com');
+            assert(defaultSettings.currency === 'USD' && defaultSettings.defaultTimeHorizon === 20, 
+                'Test 1: Default settings load correctly');
+
+            // --- Test 2: User Creation and Settings Save ---
+            const testEmail = 'test@cashboat.com';
+            const testPassword = 'Password123!';
+            const salt = auth.generateSalt();
+            const hash = await auth.hashPassword(salt, testPassword);
+            
+            const testUser = {
+                id: 1, name: 'Tester', email: testEmail, salt: salt, passwordHash: hash, 
+                createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+            };
+            auth.saveUser(testUser);
+            auth.login(testEmail);
+
+            const newSettings = { ...defaultSettings, currency: 'MXN', defaultTimeHorizon: 30 };
+            settings.saveSettings(testEmail, newSettings);
+            const loadedSettings = settings.getSettings(testEmail);
+            
+            assert(loadedSettings.currency === 'MXN' && loadedSettings.defaultTimeHorizon === 30, 
+                'Test 2: User settings save and load correctly');
+
+            // --- Test 3: Financial Projection Model (Simple Check) ---
+            const projectionParams = {
+                salary: 5000, expenses: 4000, capital: 1000, annualReturn: 10, 
+                annualInflation: 0, annualGrowth: 0, horizon: 1, isRealView: false, isCompound: true
+            };
+            const projectionResult = runProjection(projectionParams);
+            
+            // Expected final value after 1 year (12 months):
+            // Monthly savings: 1000
+            // Initial capital: 1000
+            // Monthly return rate: (1.10^(1/12) - 1) ≈ 0.007974
+            // Final value is roughly 1000 * (1 + r)^12 + 1000 * (1 + r)^11 + ... + 1000 * (1 + r)^0
+            // A simple check: final value should be greater than total contributions (1000 + 12*1000 = 13000)
+            assert(projectionResult.nominalData[1] > 13000, 
+                `Test 3: Projection model runs and generates expected growth (Final: ${projectionResult.nominalData[1].toFixed(2)})`);
+
+            // --- Test 4: Investment Comparison Model (Simple Check) ---
+            const comparisonStrategy = {
+                name: 'Test Strategy', initialCapital: 1000, monthlyContribution: 100, 
+                annualReturn: 10, timeframe: 1, isCompound: true
+            };
+            const comparisonResult = runComparisonSimulation(comparisonStrategy);
+            
+            assert(comparisonResult.finalValue > 2200, 
+                `Test 4: Comparison model runs and generates expected growth (Final: ${comparisonResult.finalValue.toFixed(2)})`);
+            assert(comparisonResult.cagr > 0, 
+                `Test 4b: Comparison model calculates CAGR (${comparisonResult.cagr.toFixed(2)}%)`);
+
+            // --- Final Summary ---
+            const summary = document.createElement('h2');
+            summary.textContent = `Summary: ${testsPassed} Passed, ${testsFailed} Failed`;
+            resultsDiv.appendChild(summary);
+
+            console.log('--- Behavior Tests Complete ---');
+            console.log(`Summary: ${testsPassed} Passed, ${testsFailed} Failed`);
+            
+            // Cleanup
+            localStorage.clear();
+        }
+
+        // Run tests after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', runBehaviorTests);
+    </script>
+</body>
+</html>

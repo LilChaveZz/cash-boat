@@ -72,7 +72,7 @@
             if (submittedHash === user.passwordHash) {
                 // Authentication successful
                 auth.login(user.email);
-                window.location.href = '../homepage/profile.html';
+                window.location.href = '../settings.html';
             } else {
                 // Authentication failed
                 errorDisplay.textContent = 'Credenciales inválidas. Por favor, verifica tu correo y contraseña.';

@@ -1,0 +1,126 @@
+/* styles/tools.css */
+@import url('main.css');
+
+.tool-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    padding: 0 2rem 4rem;
+}
+
+.tool-controls {
+    background: var(--pure-white);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    height: fit-content;
+}
+
+.tool-controls h3 {
+    color: var(--primary-blue);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.tool-controls .form-group {
+    margin-bottom: 1rem;
+}
+
+.tool-controls label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--secondary-blue);
+}
+
+.tool-controls input[type="number"],
+.tool-controls select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.tool-controls input[type="number"]:focus,
+.tool-controls select:focus {
+    border-color: var(--primary-blue);
+    outline: none;
+}
+
+.tool-chart {
+    background: var(--pure-white);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+/* Comparison Tool Specific Styles */
+.comparison-tool {
+    grid-template-columns: 350px 1fr;
+}
+
+.strategy-card {
+    border: 1px solid #eee;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background: var(--light-bg);
+}
+
+.strategy-card h4 {
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--secondary-blue);
+    font-size: 1.1rem;
+}
+
+.remove-strategy {
+    background: none;
+    border: none;
+    color: #ff4d4f;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0;
+}
+
+.summary-table-container {
+    margin-top: 2rem;
+    overflow-x: auto;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.summary-table th, .summary-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-table th {
+    background-color: var(--light-bg);
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.summary-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .tool-container, .comparison-tool {
+        grid-template-columns: 1fr;
+        padding: 0 1rem 4rem;
+    }
+}

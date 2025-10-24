@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashBoat - Proyección Financiera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/tools.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="brand-group">
+                <div class="logo-text">
+                    <span class="cash">Cash</span>
+                    <span class="boat">Boat</span>
+                </div>
+                <img src="images/logo.png" alt="Logo" class="nav-logo">
+            </div>
+
+            <div class="nav-center">
+                <div class="nav-pill">
+                    <!-- Dynamic links will be injected here by js/auth.js -->
+                </div>
+            </div>
+
+            <div class="nav-button-container">
+                <a href="auth/signup.html" class="nav-button">Empezar</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content-section">
+        <div class="section-title">
+            <h2>Proyección Financiera</h2>
+            <p>Modelando tu riqueza a través del tiempo.</p>
+        </div>
+        
+        <div class="tool-container">
+            <div class="tool-controls">
+                <h3>Parámetros</h3>
+                <form id="projection-form">
+                    <div class="form-group">
+                        <label for="salary">Salario Mensual</label>
+                        <input type="number" id="salary" value="3000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenses">Gastos Mensuales</label>
+                        <input type="number" id="expenses" value="2000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="capital">Capital Inicial</label>
+                        <input type="number" id="capital" value="10000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="return">Retorno Anual Esperado (%)</label>
+                        <input type="number" id="return" value="8" min="0" max="100" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="inflation">Inflación Anual (%)</label>
+                        <input type="number" id="inflation" value="3" min="0" max="100" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="growth">Crecimiento Salarial Anual (%)</label>
+                        <input type="number" id="growth" value="2" min="0" max="100" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="horizon">Horizonte de Tiempo (Años)</label>
+                        <input type="number" id="horizon" value="20" min="1" max="60">
+                    </div>
+                    <div class="form-group">
+                        <label for="view-toggle">Vista</label>
+                        <select id="view-toggle">
+                            <option value="nominal">Valor Nominal</option>
+                            <option value="real">Valor Ajustado a Inflación (Real)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="preset">Presets</label>
+                        <select id="preset">
+                            <option value="custom">Personalizado</option>
+                            <option value="conservative">Conservador</option>
+                            <option value="moderate">Moderado</option>
+                            <option value="aggressive">Agresivo</option>
+                        </select>
+                    </div>
+                </form>
+                <button id="export-csv" class="cta-primary full-width">Exportar a CSV</button>
+            </div>
+            <div class="tool-chart">
+                <canvas id="projectionChart"></canvas>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer (Simple for now) -->
+    <footer>
+        <div class="nav-container" style="text-align: center; padding: 2rem 0; font-size: 0.9rem; color: #888;">
+            &copy; 2025 CashBoat. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/proyeccion.js"></script>
+</body>
+</html>

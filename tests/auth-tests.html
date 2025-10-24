@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #1a73e8; }
+        .test-result { margin-top: 10px; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #e6ffe6; border: 1px solid #52c41a; color: #52c41a; }
+        .fail { background-color: #ffe6e6; border: 1px solid #ff4d4f; color: #ff4d4f; }
+    </style>
+</head>
+<body>
+    <h1>CashBoat Auth Unit Tests</h1>
+    <p>Open the console (F12) to see detailed test results.</p>
+    <div id="results"></div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        const resultsDiv = document.getElementById('results');
+        let testsPassed = 0;
+        let testsFailed = 0;
+
+        function assert(condition, message) {
+            const result = condition ? 'PASS' : 'FAIL';
+            const className = condition ? 'pass' : 'fail';
+            const logMessage = `[${result}] ${message}`;
+
+            const p = document.createElement('p');
+            p.className = `test-result ${className}`;
+            p.textContent = logMessage;
+            resultsDiv.appendChild(p);
+
+            if (condition) {
+                testsPassed++;
+            } else {
+                testsFailed++;
+            }
+            console.log(logMessage);
+        }
+
+        async function runTests() {
+            console.log('--- Running Auth Tests ---');
+            localStorage.clear(); // Start with a clean slate
+
+            // --- Test 1: generateSalt ---
+            const salt1 = auth.generateSalt();
+            assert(salt1 && salt1.length === 32, 'Test 1: Salt generation (length and existence)');
+
+            // --- Test 2: hashPassword ---
+            const password = 'TestPassword123!';
+            const hash1 = await auth.hashPassword(salt1, password);
+            assert(hash1 && hash1.length === 64, 'Test 2: Password hashing (length and existence)');
+            
+            // Check consistency
+            const hash2 = await auth.hashPassword(salt1, password);
+            assert(hash1 === hash2, 'Test 3: Password hashing consistency');
+
+            // Check difference with different password
+            const hash3 = await auth.hashPassword(salt1, 'WrongPassword');
+            assert(hash1 !== hash3, 'Test 4: Password hashing difference with wrong password');
+
+            // --- Test 5: saveUser and findUserByEmail ---
+            const testUser = {
+                id: 1,
+                name: 'Test User',
+                email: 'test@example.com',
+                avatarBase64: null,
+                salt: salt1,
+                passwordHash: hash1,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            auth.saveUser(testUser);
+            const foundUser = auth.findUserByEmail('test@example.com');
+            assert(foundUser && foundUser.email === 'test@example.com', 'Test 5: User save and find by email');
+
+            // --- Test 6: login and getSessionEmail ---
+            auth.login('test@example.com');
+            const sessionEmail = auth.getSessionEmail();
+            assert(sessionEmail === 'test@example.com', 'Test 6: Login and get session email');
+
+            // --- Test 7: getCurrentUser ---
+            const currentUser = auth.getCurrentUser();
+            assert(currentUser && currentUser.name === 'Test User', 'Test 7: Get current user');
+
+            // --- Test 8: updateUser ---
+            currentUser.name = 'Updated Name';
+            auth.updateUser(currentUser);
+            const updatedUser = auth.findUserByEmail('test@example.com');
+            assert(updatedUser.name === 'Updated Name', 'Test 8: Update user');
+
+            // --- Test 9: logout ---
+            auth.logout();
+            const afterLogout = auth.getSessionEmail();
+            assert(afterLogout === null, 'Test 9: Logout clears session');
+
+            // --- Test 10: findUserByEmail (not found) ---
+            const notFoundUser = auth.findUserByEmail('nonexistent@example.com');
+            assert(notFoundUser === null, 'Test 10: Find non-existent user');
+
+
+            // --- Final Summary ---
+            const summary = document.createElement('h2');
+            summary.textContent = `Summary: ${testsPassed} Passed, ${testsFailed} Failed`;
+            resultsDiv.appendChild(summary);
+
+            console.log('--- Auth Tests Complete ---');
+            console.log(`Summary: ${testsPassed} Passed, ${testsFailed} Failed`);
+        }
+
+        // Run tests after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', runTests);
+    </script>
+</body>
+</html>

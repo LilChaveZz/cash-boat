@@ -1,0 +1,182 @@
+/* styles/educacion.css */
+@import url('main.css');
+
+.education-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.education-card {
+    background-color: var(--pure-white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.education-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card-image-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.card-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.education-card:hover .card-image-container img {
+    transform: scale(1.05);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+}
+
+.card-content {
+    color: var(--pure-white);
+    text-align: left;
+    width: 100%;
+}
+
+.card-content h3 {
+    font-size: 1.4rem;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.card-type {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.card-type-icon {
+    margin-left: 5px;
+    font-size: 1.2rem;
+    color: var(--primary-blue);
+}
+
+.card-excerpt {
+    padding: 1rem;
+    color: var(--secondary-blue);
+    font-size: 0.95rem;
+    flex-grow: 1;
+}
+
+.card-footer {
+    padding: 0 1rem 1rem;
+    text-align: right;
+}
+
+.ver-mas {
+    color: var(--primary-blue);
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.ver-mas:hover {
+    opacity: 0.8;
+}
+
+/* Article Page Styling */
+.article-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+}
+
+.article-header-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.article-title {
+    font-size: 2.5rem;
+    color: var(--secondary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.article-meta {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.article-content {
+    line-height: 1.8;
+    color: var(--secondary-blue);
+}
+
+.article-content p {
+    margin-bottom: 1.5rem;
+}
+
+.article-content strong {
+    color: var(--primary-blue);
+}
+
+.breadcrumb {
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.breadcrumb a {
+    color: var(--primary-blue);
+    text-decoration: none;
+}
+
+.breadcrumb span {
+    color: #888;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .education-grid {
+        padding: 0 1rem;
+        grid-template-columns: 1fr;
+    }
+
+    .article-title {
+        font-size: 2rem;
+    }
+
+    .article-container {
+        padding: 0 1rem 4rem;
+    }
+}
