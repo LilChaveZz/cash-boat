@@ -2,12 +2,14 @@
 @import url('main.css');
 
 .tool-container {
-    max-width: 1200px;
+    max-width: 1600px; /* increase usable page width so chart can grow */
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 300px 1fr;
+    /* Make the parameters column wider so it takes more horizontal space */
+    grid-template-columns: 560px 1fr;
     gap: 2rem;
     padding: 0 2rem 4rem;
+    align-items: stretch; /* stretch children so both columns match height */
 }
 
 .tool-controls {
@@ -16,24 +18,51 @@
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     height: fit-content;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+    overflow: auto; /* allow scrolling when controls exceed available height */
+}
+
+/* Make the form itself transparent to layout so each .form-group becomes
+   a direct child of the .tool-controls grid and can be auto-placed into
+   the two-column layout. display:contents has good modern browser support.
+   This avoids the form acting as a single grid item that stacks controls.
+*/
+.tool-controls > form {
+    display: contents;
 }
 
 .tool-controls h3 {
     color: var(--primary-blue);
     margin-bottom: 1.5rem;
+    grid-column: 1 / -1; /* ensure the heading spans all columns */
     font-size: 1.5rem;
 }
 
 .tool-controls .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0; /* spacing is handled by grid gap */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .tool-controls label {
-    display: block;
-    margin-bottom: 0.3rem;
+    /* Center label text in a fixed label area so single-word labels
+       appear centered and two-word labels can occupy two lines while
+       keeping consistent vertical space across all labels. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 3.2rem; /* reserve vertical space for up to 2 lines */
+    margin-bottom: 0.4rem;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--secondary-blue);
+    white-space: normal;
+    line-height: 1.1;
+    padding: 0 0.25rem;
 }
 
 .tool-controls input[type="number"],
@@ -44,6 +73,18 @@
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.3s;
+}
+
+/* Allow certain controls to span both columns */
+.tool-controls .form-group.full {
+    grid-column: 1 / -1;
+}
+
+/* Buttons inside the controls area that use .full-width should span both columns
+   so they don't occupy only the second column on desktop */
+.tool-controls .full-width {
+    grid-column: 1 / -1;
+    justify-self: stretch;
 }
 
 .tool-controls input[type="number"]:focus,
@@ -57,7 +98,22 @@
     padding: 1.5rem;
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    min-height: 560px; /* ensure a reasonable chart height on desktop */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* keep chart canvas contained */
 }
+
+/* Keep the controls panel at least as tall as the chart so they visually match */
+.tool-controls {
+    min-height: 560px;
+}
+
+.tool-chart canvas {
+    width: 100% !important;
+    height: 100% !important; /* Chart.js will fill the container */
+}
+
 
 /* Comparison Tool Specific Styles */
 .comparison-tool {
@@ -122,5 +178,13 @@
     .tool-container, .comparison-tool {
         grid-template-columns: 1fr;
         padding: 0 1rem 4rem;
+    }
+    /* On mobile, stack chart first then controls */
+    .tool-chart {
+        order: -1;
+        min-height: 300px;
+    }
+    .tool-controls {
+        grid-template-columns: 1fr; /* single column for inputs on mobile */
     }
 }

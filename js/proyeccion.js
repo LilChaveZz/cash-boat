@@ -139,6 +139,26 @@ function updateChart(results, isRealView) {
     projectionChart.update();
 }
 
+// Ensure the chart panel height matches the controls panel so the chart
+// does not extend below the parameters menu on desktop. We set the
+// chart container height to the controls' offsetHeight and ask Chart.js
+// to resize. Called after renders and on window resize.
+function syncChartHeight() {
+    const controls = document.querySelector('.tool-controls');
+    const chartPanel = document.querySelector('.tool-chart');
+    if (!controls || !chartPanel) return;
+
+    // Use the controls' height but enforce a sensible minimum
+    const min = 360; // px
+    const targetHeight = Math.max(controls.offsetHeight, min);
+    chartPanel.style.height = targetHeight + 'px';
+
+    // If Chart.js instance exists, trigger a resize so it redraws to new size
+    if (projectionChart && typeof projectionChart.resize === 'function') {
+        projectionChart.resize();
+    }
+}
+
 function getFormParameters() {
     const s = settings.getSettings(auth.getSessionEmail() || 'default');
     
@@ -161,6 +181,8 @@ function calculateAndRender() {
     const params = getFormParameters();
     lastResults = runProjection(params);
     updateChart(lastResults, params.isRealView);
+    // Keep chart height in sync with controls after updating data
+    syncChartHeight();
 }
 
 function applyPreset(presetName) {
@@ -234,4 +256,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initChart();
     applyPreset(s.defaultRiskPreset); // Apply the preset to set initial return/growth rates
     calculateAndRender();
+    // initial sync
+    syncChartHeight();
+    // keep heights in sync on resize (debounced)
+    let resizeTimeout = null;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            syncChartHeight();
+        }, 120);
+    });
 });
