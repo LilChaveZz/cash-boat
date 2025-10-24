@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashBoat - Iniciar Sesión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/auth.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1 class="auth-title">Bienvenido de vuelta</h1>
+            <p class="auth-subtitle">Inicia sesión para continuar navegando</p>
+
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-group-inline">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember-me" name="remember-me">
+                        <label for="remember-me">Recordarme</label>
+                    </div>
+                    <a href="#" id="forgot-password-link" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <p id="login-error" class="error-message" aria-live="polite"></p>
+
+                <button type="submit" class="cta-primary full-width">Iniciar Sesión</button>
+            </form>
+
+            <p class="auth-footer">
+                ¿No tienes una cuenta? <a href="signup.html">Regístrate aquí</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        const form = document.getElementById('login-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorDisplay = document.getElementById('login-error');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorDisplay.textContent = ''; // Clear previous errors
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            const user = auth.findUserByEmail(email);
+
+            if (!user) {
+                errorDisplay.textContent = 'Credenciales inválidas. Por favor, verifica tu correo y contraseña.';
+                return;
+            }
+
+            // Hash the submitted password with the user's salt
+            const submittedHash = await auth.hashPassword(user.salt, password);
+
+            if (submittedHash === user.passwordHash) {
+                // Authentication successful
+                auth.login(user.email);
+                window.location.href = '../homepage/profile.html';
+            } else {
+                // Authentication failed
+                errorDisplay.textContent = 'Credenciales inválidas. Por favor, verifica tu correo y contraseña.';
+            }
+        });
+
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Esta es una demostración. En una aplicación real, se enviaría un correo electrónico de restablecimiento de contraseña.');
+        });
+    </script>
+</body>
+</html>

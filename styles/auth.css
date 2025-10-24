@@ -1,0 +1,254 @@
+/* styles/auth.css */
+
+/* Import variables from main.css (assuming it's in the parent directory) */
+@import url('../main.css');
+
+/* Define necessary variables if main.css is not available or for standalone testing */
+:root {
+    --primary-blue: #1a73e8;
+    --secondary-blue: #2c3e50;
+    --pure-white: #ffffff;
+    --light-bg: #f5f9fc;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--light-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* --- General Auth Layout --- */
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+.auth-card {
+    background: var(--pure-white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.auth-title {
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+    color: var(--secondary-blue);
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+/* --- Form Styling --- */
+.auth-form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--secondary-blue);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: var(--primary-blue);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+}
+
+.cta-primary {
+    /* Reusing button style from main.css */
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    background: var(--primary-blue);
+    color: var(--pure-white);
+    border: none;
+    cursor: pointer;
+}
+
+.cta-primary:hover {
+    background: #155bb5; /* Darker blue */
+}
+
+.full-width {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.auth-footer {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--secondary-blue);
+}
+
+.auth-footer a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* --- Error and Success Messages --- */
+.error-message {
+    color: #ff4d4f; /* Red */
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    text-align: left;
+}
+
+.success-message {
+    color: #52c41a; /* Green */
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    text-align: left;
+}
+
+/* --- Password Strength Indicator --- */
+.password-strength {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.strength-bar {
+    height: 5px;
+    width: 0%;
+    background-color: #ccc;
+    border-radius: 2.5px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.strength-text {
+    font-size: 0.8rem;
+    color: var(--secondary-blue);
+    opacity: 0.7;
+}
+
+/* --- Login Specific Styles --- */
+.form-group-inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group input {
+    width: auto;
+    margin-right: 5px;
+}
+
+.forgot-password {
+    font-size: 0.9rem;
+    color: var(--primary-blue);
+    text-decoration: none;
+}
+
+/* --- Profile Specific Styles --- */
+.profile-card {
+    text-align: center;
+}
+
+.profile-header {
+    margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border: 3px solid var(--primary-blue);
+}
+
+.profile-email {
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.cta-secondary {
+    /* Reusing button style from main.css */
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: var(--pure-white);
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    cursor: pointer;
+}
+
+.cta-secondary:hover {
+    background: var(--primary-blue);
+    color: var(--pure-white);
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #eee;
+    margin: 2rem 0;
+}
+
+.profile-card h3 {
+    text-align: left;
+    color: var(--secondary-blue);
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
+
+    .form-group-inline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

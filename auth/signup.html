@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashBoat - Regístrate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/auth.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1 class="auth-title">Crea tu cuenta CashBoat</h1>
+            <p class="auth-subtitle">Navega hacia tu libertad financiera</p>
+
+            <form id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label for="name">Nombre completo</label>
+                    <input type="text" id="name" name="name" required aria-describedby="name-error">
+                    <p id="name-error" class="error-message" aria-live="polite"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" required aria-describedby="email-error">
+                    <p id="email-error" class="error-message" aria-live="polite"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required minlength="8" aria-describedby="password-error password-strength">
+                    <div id="password-strength" class="password-strength">
+                        <div class="strength-bar"></div>
+                        <span class="strength-text"></span>
+                    </div>
+                    <p id="password-error" class="error-message" aria-live="polite"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar contraseña</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required aria-describedby="confirm-password-error">
+                    <p id="confirm-password-error" class="error-message" aria-live="polite"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="avatar">Foto de perfil (Opcional)</label>
+                    <input type="file" id="avatar" name="avatar" accept="image/*" aria-describedby="avatar-error">
+                    <p id="avatar-error" class="error-message" aria-live="polite"></p>
+                </div>
+
+                <button type="submit" class="cta-primary full-width">Registrarse</button>
+            </form>
+
+            <p class="auth-footer">
+                ¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        const form = document.getElementById('signup-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const nameInput = document.getElementById('name');
+        const avatarInput = document.getElementById('avatar');
+
+        // Password Strength Indicator Logic
+        const strengthBar = document.querySelector('.strength-bar');
+        const strengthText = document.querySelector('.strength-text');
+
+        function checkPasswordStrength(password) {
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (/[a-z]/.test(password)) score++;
+            if (/[A-Z]/.test(password)) score++;
+            if (/\d/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+
+            let strength = '';
+            let color = '';
+            let width = 0;
+
+            if (score === 0) {
+                strength = 'Muy débil';
+                color = '#ccc';
+                width = '0%';
+            } else if (score <= 2) {
+                strength = 'Débil';
+                color = '#ff4d4f';
+                width = '25%';
+            } else if (score === 3) {
+                strength = 'Moderada';
+                color = '#faad14';
+                width = '50%';
+            } else if (score === 4) {
+                strength = 'Fuerte';
+                color = '#52c41a';
+                width = '75%';
+            } else if (score === 5) {
+                strength = 'Muy fuerte';
+                color = '#0050b3';
+                width = '100%';
+            }
+
+            strengthBar.style.width = width;
+            strengthBar.style.backgroundColor = color;
+            strengthText.textContent = strength;
+        }
+
+        passwordInput.addEventListener('input', (e) => {
+            checkPasswordStrength(e.target.value);
+            // Clear password mismatch error on input
+            if (confirmPasswordInput.value && e.target.value !== confirmPasswordInput.value) {
+                document.getElementById('confirm-password-error').textContent = 'Las contraseñas no coinciden.';
+            } else {
+                document.getElementById('confirm-password-error').textContent = '';
+            }
+        });
+
+        confirmPasswordInput.addEventListener('input', (e) => {
+            if (e.target.value !== passwordInput.value) {
+                document.getElementById('confirm-password-error').textContent = 'Las contraseñas no coinciden.';
+            } else {
+                document.getElementById('confirm-password-error').textContent = '';
+            }
+        });
+
+        emailInput.addEventListener('input', (e) => {
+            const emailError = document.getElementById('email-error');
+            if (auth.findUserByEmail(e.target.value)) {
+                emailError.textContent = 'Este correo ya está registrado.';
+            } else {
+                emailError.textContent = '';
+            }
+        });
+
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Basic client-side validation
+            let isValid = true;
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const name = nameInput.value.trim();
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirm-password-error').textContent = 'Las contraseñas no coinciden.';
+                isValid = false;
+            } else {
+                document.getElementById('confirm-password-error').textContent = '';
+            }
+
+            if (auth.findUserByEmail(email)) {
+                document.getElementById('email-error').textContent = 'Este correo ya está registrado.';
+                isValid = false;
+            } else {
+                document.getElementById('email-error').textContent = '';
+            }
+
+            if (!isValid) return;
+
+            // Handle Avatar File
+            let avatarBase64 = null;
+            if (avatarInput.files.length > 0) {
+                const file = avatarInput.files[0];
+                try {
+                    avatarBase64 = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                } catch (error) {
+                    console.error("Error reading file:", error);
+                    document.getElementById('avatar-error').textContent = 'Error al cargar la imagen.';
+                    return;
+                }
+            }
+            
+            // Hash password and save user
+            const salt = auth.generateSalt();
+            const passwordHash = await auth.hashPassword(salt, password);
+            const now = new Date().toISOString();
+
+            const newUser = {
+                id: Date.now(), // Simple unique ID
+                name,
+                email,
+                avatarBase64,
+                salt,
+                passwordHash,
+                createdAt: now,
+                updatedAt: now
+            };
+
+            auth.saveUser(newUser);
+            auth.login(newUser.email);
+            
+            // Redirect to profile page
+            window.location.href = '../homepage/profile.html';
+        });
+
+        // Initial check for password strength
+        checkPasswordStrength(passwordInput.value);
+    </script>
+</body>
+</html>

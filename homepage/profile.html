@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashBoat - Perfil de Usuario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/auth.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body class="protected">
+    <div class="auth-container">
+        <div class="auth-card profile-card">
+            <h1 class="auth-title">Mi Perfil</h1>
+            <p class="auth-subtitle">Administra tu información personal</p>
+
+            <div class="profile-header">
+                <img id="profile-avatar" src="" alt="Avatar de usuario" class="profile-avatar">
+                <h2 id="profile-name"></h2>
+                <p id="profile-email" class="profile-email"></p>
+                <button id="logout-button" class="cta-secondary">Cerrar Sesión</button>
+            </div>
+
+            <hr>
+
+            <!-- Profile Update Form -->
+            <form id="profile-form" class="auth-form">
+                <h3>Actualizar Información</h3>
+                <div class="form-group">
+                    <label for="update-name">Nombre completo</label>
+                    <input type="text" id="update-name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="update-avatar">Cambiar Foto de Perfil (Opcional)</label>
+                    <input type="file" id="update-avatar" name="avatar" accept="image/*">
+                </div>
+                
+                <p id="profile-update-message" class="success-message" aria-live="polite"></p>
+                <button type="submit" class="cta-primary full-width">Guardar Cambios</button>
+            </form>
+
+            <hr>
+
+            <!-- Password Change Form -->
+            <form id="password-form" class="auth-form">
+                <h3>Cambiar Contraseña</h3>
+                <div class="form-group">
+                    <label for="current-password">Contraseña Actual</label>
+                    <input type="password" id="current-password" name="current-password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-password">Nueva Contraseña</label>
+                    <input type="password" id="new-password" name="new-password" required minlength="8">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-new-password">Confirmar Nueva Contraseña</label>
+                    <input type="password" id="confirm-new-password" name="confirm-new-password" required>
+                </div>
+
+                <p id="password-change-message" class="error-message" aria-live="polite"></p>
+                <button type="submit" class="cta-primary full-width">Cambiar Contraseña</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // auth.js's requireAuth() will run first due to the 'protected' class on body.
+
+        const profileName = document.getElementById('profile-name');
+        const profileEmail = document.getElementById('profile-email');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const updateNameInput = document.getElementById('update-name');
+        const updateAvatarInput = document.getElementById('update-avatar');
+        const profileForm = document.getElementById('profile-form');
+        const passwordForm = document.getElementById('password-form');
+        const logoutButton = document.getElementById('logout-button');
+        const profileUpdateMessage = document.getElementById('profile-update-message');
+        const passwordChangeMessage = document.getElementById('password-change-message');
+
+        let currentUser = auth.getCurrentUser();
+
+        function loadUserProfile() {
+            if (!currentUser) return; // Should not happen if requireAuth is working
+
+            profileName.textContent = currentUser.name;
+            profileEmail.textContent = currentUser.email;
+            updateNameInput.value = currentUser.name;
+
+            // Set avatar or default
+            if (currentUser.avatarBase64) {
+                profileAvatar.src = currentUser.avatarBase64;
+            } else {
+                // Placeholder for default avatar (a simple blue circle)
+                profileAvatar.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%231a73e8"/><text x="50" y="60" font-family="Arial" font-size="40" fill="%23ffffff" text-anchor="middle">' + currentUser.name.charAt(0).toUpperCase() + '</text></svg>';
+            }
+        }
+
+        // --- Profile Update Logic ---
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            profileUpdateMessage.textContent = '';
+            
+            let newName = updateNameInput.value.trim();
+            let newAvatarBase64 = currentUser.avatarBase64;
+
+            // 1. Handle Avatar File Update
+            if (updateAvatarInput.files.length > 0) {
+                const file = updateAvatarInput.files[0];
+                try {
+                    newAvatarBase64 = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                } catch (error) {
+                    profileUpdateMessage.textContent = 'Error al cargar la imagen.';
+                    profileUpdateMessage.classList.remove('success-message');
+                    profileUpdateMessage.classList.add('error-message');
+                    return;
+                }
+            }
+
+            // 2. Update User Object
+            currentUser.name = newName;
+            currentUser.avatarBase64 = newAvatarBase64;
+            currentUser.updatedAt = new Date().toISOString();
+
+            // 3. Save and Reload
+            auth.updateUser(currentUser);
+            loadUserProfile();
+            
+            profileUpdateMessage.textContent = 'Perfil actualizado con éxito.';
+            profileUpdateMessage.classList.remove('error-message');
+            profileUpdateMessage.classList.add('success-message');
+            
+            // Clear file input after successful upload
+            updateAvatarInput.value = '';
+        });
+
+        // --- Password Change Logic ---
+        passwordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            passwordChangeMessage.textContent = '';
+
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmNewPassword = document.getElementById('confirm-new-password').value;
+
+            // 1. Validate New Password Match
+            if (newPassword !== confirmNewPassword) {
+                passwordChangeMessage.textContent = 'La nueva contraseña y su confirmación no coinciden.';
+                passwordChangeMessage.classList.add('error-message');
+                return;
+            }
+
+            // 2. Validate Current Password
+            const currentPasswordHash = await auth.hashPassword(currentUser.salt, currentPassword);
+
+            if (currentPasswordHash !== currentUser.passwordHash) {
+                passwordChangeMessage.textContent = 'La contraseña actual es incorrecta.';
+                passwordChangeMessage.classList.add('error-message');
+                return;
+            }
+
+            // 3. Hash and Save New Password
+            const newSalt = auth.generateSalt();
+            const newPasswordHash = await auth.hashPassword(newSalt, newPassword);
+
+            currentUser.salt = newSalt;
+            currentUser.passwordHash = newPasswordHash;
+            currentUser.updatedAt = new Date().toISOString();
+
+            auth.updateUser(currentUser);
+
+            // 4. Clear form and show success
+            passwordForm.reset();
+            passwordChangeMessage.textContent = 'Contraseña cambiada con éxito.';
+            passwordChangeMessage.classList.remove('error-message');
+            passwordChangeMessage.classList.add('success-message');
+        });
+
+        // --- Logout Logic ---
+        logoutButton.addEventListener('click', () => {
+            auth.logout();
+        });
+
+        // Initial load
+        if (currentUser) {
+            loadUserProfile();
+        }
+    </script>
+</body>
+</html>
