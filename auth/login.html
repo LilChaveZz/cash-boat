@@ -72,7 +72,22 @@
             if (submittedHash === user.passwordHash) {
                 // Authentication successful
                 auth.login(user.email);
-                window.location.href = '../settings.html';
+                // After login, prefer redirecting to the original destination (next)
+                // if provided, otherwise default to Educación.
+                const params = new URLSearchParams(window.location.search);
+                const next = params.get('next');
+                if (next) {
+                    // next was encoded by auth.js as an absolute path; decode and navigate
+                    try {
+                        const dest = decodeURIComponent(next);
+                        window.location.href = dest;
+                    } catch (e) {
+                        // Fallback to Educación if decoding fails
+                        window.location.href = '../educacion.html';
+                    }
+                } else {
+                    window.location.href = '../educacion.html';
+                }
             } else {
                 // Authentication failed
                 errorDisplay.textContent = 'Credenciales inválidas. Por favor, verifica tu correo y contraseña.';

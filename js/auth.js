@@ -7,12 +7,34 @@ const REDIRECT_URL = 'auth/login.html';
 const HOME_URL = 'index.html';
 
 // --- Navbar Links ---
-const NAV_LINKS = [
+// Public links shown when NOT authenticated
+const NAV_LINKS_PUBLIC = [
     { href: 'index.html', text: 'Inicio' },
+    { href: 'educacion.html', text: 'Educación' }
+];
+
+// Authenticated links (Inicio removed; user starts in Educación)
+const NAV_LINKS_AUTH = [
     { href: 'educacion.html', text: 'Educación' },
     { href: 'proyeccion.html', text: 'Proyección' },
     { href: 'comparacion.html', text: 'Comparación' }
 ];
+
+// Pages that require an active session. If a user navigates directly to one of
+// these pages without being logged in, they'll be redirected to the login page.
+const PROTECTED_PAGES = [
+    'educacion.html',
+    'proyeccion.html',
+    'comparacion.html',
+    'settings.html',
+    'homepage/profile.html',
+    'profile.html'
+];
+
+// Common URLs used by logic below
+// The canonical settings page (used by the navbar when logged in)
+const PROFILE_URL = 'settings.html';
+const EDUCACION_URL = 'educacion.html';
 
 // --- Utility Functions ---
 
@@ -190,19 +212,20 @@ function renderDynamicNavbar() {
 
     if (!navContainer || !navButtonContainer) return;
 
-    // 1. Render main links
-    navContainer.innerHTML = NAV_LINKS.map(link => 
+    // 1. Choose which set of links to render based on auth state
+    const linksToRender = currentUser ? NAV_LINKS_AUTH : NAV_LINKS_PUBLIC;
+    navContainer.innerHTML = linksToRender.map(link =>
         `<a href="${link.href}">${link.text}</a>`
     ).join('');
 
     // 2. Render dynamic button (Login/Signup or Profile)
     if (currentUser) {
-        // Logged in: Show Profile button
-        navButtonContainer.innerHTML = 
-            `<a href="settings.html" class="nav-button">Perfil</a>`;
+        // Logged in: show Profile button
+        navButtonContainer.innerHTML =
+            `<a href="${PROFILE_URL}" class="nav-button">Perfil</a>`;
     } else {
-        // Logged out: Show Empezar (Login/Signup) button
-        navButtonContainer.innerHTML = 
+        // Logged out: show Empezar (Signup)
+        navButtonContainer.innerHTML =
             `<a href="auth/signup.html" class="nav-button">Empezar</a>`;
     }
 }
@@ -214,6 +237,30 @@ window.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.main-nav')) {
         renderDynamicNavbar();
         adjustBodyPaddingForNav();
+    }
+});
+// --- Global auth-aware routing ---
+window.addEventListener('DOMContentLoaded', () => {
+    const currentUser = getCurrentUser();
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+
+    // If user is logged in and on the public landing page, redirect to Educación
+    if (currentUser) {
+        if (path === '' || path === 'index.html' || path === '/') {
+            // Use replace so back button doesn't go back to landing
+            window.location.replace(EDUCACION_URL);
+            return;
+        }
+    }
+
+    // If user is NOT logged in and is trying to load a protected page, redirect to login
+    if (!currentUser) {
+        if (PROTECTED_PAGES.includes(path)) {
+            // preserve original destination in query so we can redirect after login
+            const dest = encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
+            window.location.replace(REDIRECT_URL + '?next=' + dest);
+            return;
+        }
     }
 });
 window.addEventListener('load', adjustBodyPaddingForNav); 

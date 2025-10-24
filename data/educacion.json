@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "title": "Los 5 Pilares de la Libertad Financiera",
+        "slug": "pilares-libertad-financiera",
+        "image": "images/education/pilares.jpg",
+        "type": "article",
+        "excerpt": "Descubre las bases sólidas sobre las que puedes construir tu futuro económico, desde el ahorro hasta la inversión inteligente.",
+        "author": "María García",
+        "date": "2025-09-01",
+        "content": "<p>La libertad financiera no es un destino, sino un viaje. Se basa en cinco pilares fundamentales: **Ahorro, Presupuesto, Deudas, Inversión y Protección**. Dominar cada uno de ellos te permitirá tomar el control total de tus finanzas.</p><p>El primer paso es el **Ahorro**. No se trata de lo que te sobra, sino de una porción que apartas de forma automática. El segundo, el **Presupuesto**, es la herramienta que te da visibilidad sobre dónde va tu dinero. El tercer pilar, la gestión de **Deudas**, es crucial, especialmente las de alto interés. El cuarto es la **Inversión**, donde tu dinero empieza a trabajar para ti. Finalmente, la **Protección** (seguros y fondo de emergencia) asegura que un evento inesperado no destruya tu progreso.</p>"
+    },
+    {
+        "id": 2,
+        "title": "¿Cómo Invertir tu Primer $1000?",
+        "slug": "invertir-primer-mil",
+        "image": "images/education/inversion.jpg",
+        "type": "video",
+        "excerpt": "Una guía práctica para principiantes sobre dónde y cómo empezar a invertir, minimizando riesgos y maximizando el potencial de crecimiento.",
+        "author": "Juan Pérez",
+        "date": "2025-09-15",
+        "content": "<p>Empezar a invertir con una pequeña cantidad puede parecer intimidante, pero es el mejor momento para aprender. Lo primero es asegurar tu **Fondo de Emergencia**.</p><p>Una vez cubierto, considera opciones de bajo riesgo y diversificadas como **ETFs (Exchange-Traded Funds)** que replican índices grandes. Esto te da exposición a cientos de empresas con una sola inversión. La clave es la **consistencia** y el **tiempo**, no intentar 'ganarle' al mercado. Recuerda, la educación es tu mejor activo antes de cualquier inversión.</p>"
+    },
+    {
+        "id": 3,
+        "title": "El Secreto del Interés Compuesto",
+        "slug": "interes-compuesto",
+        "image": "images/education/compuesto.jpg",
+        "type": "article",
+        "excerpt": "La 'octava maravilla del mundo' de Albert Einstein. Entiende cómo funciona el interés compuesto y cómo puedes ponerlo a trabajar para ti.",
+        "author": "Carlos Martínez",
+        "date": "2025-10-01",
+        "content": "<p>El **interés compuesto** es simplemente ganar intereses sobre intereses. Cuando inviertes, el dinero que ganas se reinvierte, y ese nuevo total (capital inicial + ganancias) comienza a generar aún más ganancias. Es un efecto de bola de nieve que se acelera con el tiempo.</p><p>La fórmula es $A = P(1 + r/n)^{nt}$, pero el concepto es más importante: **empieza temprano**, **sé constante** y **sé paciente**. Un pequeño capital invertido a largo plazo superará a un gran capital invertido tarde, gracias al poder del tiempo y la capitalización.</p>"
+    }
+]
