@@ -1,6 +1,7 @@
 // js/educacion.js
 
-const EDUCATION_DATA_PATH = 'data/educacion.json';
+// Use an absolute path so pages inside /educacion/ can still fetch the manifest
+const EDUCATION_DATA_PATH = '/data/educacion.json';
 const educationGrid = document.getElementById('education-grid');
 
 /**
