@@ -24,12 +24,10 @@
     overflow: auto; /* allow scrolling when controls exceed available height */
 }
 
-/* Make the form itself transparent to layout so each .form-group becomes
-   a direct child of the .tool-controls grid and can be auto-placed into
-   the two-column layout. display:contents has good modern browser support.
-   This avoids the form acting as a single grid item that stacks controls.
-*/
-.tool-controls > form {
+/* Only make forms explicitly marked with .grid-contents transparent to layout.
+   This avoids accidentally breaking other tool pages (e.g. comparison) whose
+   forms expect normal DOM structure. */
+.tool-controls > form.grid-contents {
     display: contents;
 }
 
@@ -117,7 +115,35 @@
 
 /* Comparison Tool Specific Styles */
 .comparison-tool {
-    grid-template-columns: 350px 1fr;
+    grid-template-columns: 640px 1fr; /* make parameters area wider for comparison only */
+}
+
+/* Layout for the strategies list: place strategy cards into a 2-column grid */
+.comparison-tool #strategies-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+    grid-column: 1 / -1; /* span the full controls width so the 2-column layout can use all space */
+}
+
+.comparison-tool .strategy-card {
+    margin: 0; /* grid gap handles spacing */
+}
+
+/* Comparison-specific layout overrides: keep controls from growing the page
+   indefinitely by constraining their max-height and letting them scroll. Also
+   ensure the chart panel doesn't grow beyond the viewport. */
+.comparison-tool {
+    align-items: start; /* don't stretch chart to match controls */
+}
+.comparison-tool .tool-controls {
+    max-height: calc(100vh - 260px);
+    overflow: auto;
+}
+.comparison-tool .tool-chart {
+    max-height: calc(100vh - 260px);
+    overflow: hidden;
 }
 
 .strategy-card {

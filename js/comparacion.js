@@ -6,14 +6,15 @@ const addStrategyButton = document.getElementById('add-strategy');
 const summaryTableContainer = document.getElementById('summary-table-container');
 
 let nextStrategyId = 1;
-const MAX_STRATEGIES = 3;
+const MAX_STRATEGIES = 4;
 let strategies = [];
 
 // Color palette for the comparison chart
 const COLORS = [
     '#1a73e8', // Primary Blue
     '#34a853', // Green
-    '#f9ab00'  // Yellow/Orange
+    '#f9ab00', // Yellow/Orange
+    '#ea4335'  // Red (4th strategy)
 ];
 
 // --- Chart Initialization ---
@@ -168,6 +169,25 @@ function renderStrategies() {
     });
 
     calculateAndRenderComparison();
+
+    // Keep the chart height in sync with the controls after rendering
+    syncComparisonHeight();
+}
+
+// Ensure chart panel height matches the controls panel so the chart does
+// not grow below the controls area. Called after rendering/updating.
+function syncComparisonHeight() {
+    const controls = document.querySelector('.comparison-tool .tool-controls');
+    const chartPanel = document.querySelector('.comparison-tool .tool-chart');
+    if (!controls || !chartPanel) return;
+
+    const min = 360;
+    const targetHeight = Math.max(controls.offsetHeight, min);
+    chartPanel.style.height = targetHeight + 'px';
+
+    if (comparisonChart && typeof comparisonChart.resize === 'function') {
+        comparisonChart.resize();
+    }
 }
 
 function addStrategy() {
@@ -218,6 +238,9 @@ function calculateAndRenderComparison() {
 
     updateChartComparison(results);
     renderSummaryTable(results);
+
+    // Keep the chart panel height synced after updates
+    syncComparisonHeight();
 }
 
 function updateChartComparison(results) {
@@ -288,3 +311,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 addStrategyButton.addEventListener('click', addStrategy);
+
+// Resize handling: debounce to avoid excessive layout thrash
+let _cmpResizeTimer = null;
+window.addEventListener('resize', () => {
+    if (_cmpResizeTimer) clearTimeout(_cmpResizeTimer);
+    _cmpResizeTimer = setTimeout(() => {
+        syncComparisonHeight();
+    }, 120);
+});
