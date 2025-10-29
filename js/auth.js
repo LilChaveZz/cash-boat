@@ -3,21 +3,21 @@
 // --- Constants ---
 const USERS_KEY = 'cb_users';
 const SESSION_KEY = 'cb_session';
-const REDIRECT_URL = 'auth/login.html';
-const HOME_URL = 'index.html';
+const REDIRECT_URL = '/auth/login.html';
+const HOME_URL = '/index.html';
 
 // --- Navbar Links ---
 // Public links shown when NOT authenticated
 const NAV_LINKS_PUBLIC = [
-    { href: 'index.html', text: 'Inicio' },
-    { href: 'educacion.html', text: 'Educación' }
+    { href: '/index.html', text: 'Inicio' },
+    { href: '/educacion.html', text: 'Educación' }
 ];
 
 // Authenticated links (Inicio removed; user starts in Educación)
 const NAV_LINKS_AUTH = [
-    { href: 'educacion.html', text: 'Educación' },
-    { href: 'proyeccion.html', text: 'Proyección' },
-    { href: 'comparacion.html', text: 'Comparación' }
+    { href: '/educacion.html', text: 'Educación' },
+    { href: '/proyeccion.html', text: 'Proyección' },
+    { href: '/comparacion.html', text: 'Comparación' }
 ];
 
 // Pages that require an active session. If a user navigates directly to one of
@@ -33,8 +33,8 @@ const PROTECTED_PAGES = [
 
 // Common URLs used by logic below
 // The canonical settings page (used by the navbar when logged in)
-const PROFILE_URL = 'settings.html';
-const EDUCACION_URL = 'educacion.html';
+const PROFILE_URL = '/settings.html';
+const EDUCACION_URL = '/educacion.html';
 
 // --- Utility Functions ---
 
@@ -230,7 +230,7 @@ function renderDynamicNavbar() {
     } else {
         // Logged out: show Empezar (Signup)
         navButtonContainer.innerHTML =
-            `<a href="auth/signup.html" class="nav-button">Empezar</a>`;
+            `<a href="/auth/signup.html" class="nav-button">Empezar</a>`;
     }
 }
 
