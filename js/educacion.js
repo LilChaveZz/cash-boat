@@ -98,7 +98,22 @@ async function renderArticlePage() {
     document.getElementById('article-title').textContent = article.title;
     document.getElementById('article-meta').innerHTML = `Por ${article.author} | Publicado el ${article.date}`;
     document.getElementById('article-image').src = `../${article.image}`;
-    document.getElementById('article-content').innerHTML = article.content;
+
+    // The JSON 'content' field may contain Markdown-like markers (e.g. **bold**)
+    // stored inside a string. If content includes Markdown tokens, convert a
+    // small subset (bold, italic, inline code) to HTML so it renders correctly.
+    function convertSimpleMarkdownToHtml(text) {
+        if (!text || typeof text !== 'string') return '';
+        // Convert code spans: `code`
+        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+        // Convert bold: **bold**
+        text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        // Convert italic: *italic* (avoid changing already converted **)
+        text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        return text;
+    }
+
+    document.getElementById('article-content').innerHTML = convertSimpleMarkdownToHtml(article.content);
 }
 
 
