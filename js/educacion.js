@@ -1,7 +1,12 @@
 // js/educacion.js
 
-// Use an absolute path so pages inside /educacion/ can still fetch the manifest
-const EDUCATION_DATA_PATH = '/data/educacion.json';
+// Try multiple candidate paths for the education JSON so the site works
+// both when hosted at the domain root and when served under a subpath.
+const EDUCATION_DATA_CANDIDATES = [
+    'data/educacion.json',
+    '../data/educacion.json',
+    '/data/educacion.json'
+];
 const educationGrid = document.getElementById('education-grid');
 
 /**
@@ -9,19 +14,24 @@ const educationGrid = document.getElementById('education-grid');
  * @returns {Promise<Array>} Array of education articles/videos.
  */
 async function fetchEducationData() {
-    try {
-        const response = await fetch(EDUCATION_DATA_PATH);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    // Try each candidate path until one works
+    for (const candidate of EDUCATION_DATA_CANDIDATES) {
+        try {
+            const response = await fetch(candidate);
+            if (response && response.ok) {
+                return await response.json();
+            }
+        } catch (e) {
+            // Continue to next candidate
+            // console.debug(`Fetch failed for ${candidate}:`, e);
         }
-        return await response.json();
-    } catch (e) {
-        console.error("Could not fetch education data:", e);
-        if (educationGrid) {
-            educationGrid.innerHTML = `<p class="error-message" style="text-align: center;">Error al cargar el contenido educativo. Inténtalo de nuevo más tarde.</p>`;
-        }
-        return [];
     }
+
+    console.error("Could not fetch education data from any candidate path");
+    if (educationGrid) {
+        educationGrid.innerHTML = `<p class="error-message" style="text-align: center;">Error al cargar el contenido educativo. Inténtalo de nuevo más tarde.</p>`;
+    }
+    return [];
 }
 
 /**
