@@ -15,7 +15,7 @@ const HARDCODED_EDUCATION = [
     {
         "slug": "interes-compuesto",
         "title": "Interés Compuesto: La fuerza del tiempo",
-        "image": "images/educacion/interes-compuesto.jpg",
+        "image": "images/educacion/compuesto.jpg",
         "excerpt": "Entiende cómo el interés compuesto puede multiplicar tu dinero a lo largo de los años.",
         "type": "article",
         "author": "Equipo CashBoat",
@@ -25,7 +25,7 @@ const HARDCODED_EDUCATION = [
     {
         "slug": "invertir-primer-mil",
         "title": "Cómo invertir tus primeros $1,000",
-        "image": "images/educacion/invertir-primer-mil.jpg",
+        "image": "images/educacion/inversion.jpg",
         "excerpt": "Guía práctica para comenzar a invertir con poco capital y minimizar riesgos.",
         "type": "article",
         "author": "Equipo CashBoat",
