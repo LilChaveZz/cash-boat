@@ -7,6 +7,32 @@ const EDUCATION_DATA_CANDIDATES = [
     '../data/educacion.json',
     '/data/educacion.json'
 ];
+
+// Hardcoded fallback content for demo environments where fetching the
+// JSON may fail (free hosting, subpath mismatches, etc.). This allows
+// you to present a working demo quickly without relying on the JSON.
+const HARDCODED_EDUCATION = [
+    {
+        "slug": "interes-compuesto",
+        "title": "Interés Compuesto: La fuerza del tiempo",
+        "image": "images/educacion/interes-compuesto.jpg",
+        "excerpt": "Entiende cómo el interés compuesto puede multiplicar tu dinero a lo largo de los años.",
+        "type": "article",
+        "author": "Equipo CashBoat",
+        "date": "2024-09-10",
+        "content": "El interés compuesto es el interés que se calcula sobre el capital inicial y también sobre los intereses acumulados de periodos anteriores. **Empieza hoy** y deja que el tiempo trabaje para ti."
+    },
+    {
+        "slug": "invertir-primer-mil",
+        "title": "Cómo invertir tus primeros $1,000",
+        "image": "images/educacion/invertir-primer-mil.jpg",
+        "excerpt": "Guía práctica para comenzar a invertir con poco capital y minimizar riesgos.",
+        "type": "article",
+        "author": "Equipo CashBoat",
+        "date": "2024-11-01",
+        "content": "Puedes diversificar en fondos indexados, ETFs o depósitos según tu perfil. *La consistencia importa más que la cantidad inicial.*"
+    }
+];
 const educationGrid = document.getElementById('education-grid');
 
 /**
@@ -27,11 +53,17 @@ async function fetchEducationData() {
         }
     }
 
-    console.error("Could not fetch education data from any candidate path");
+    console.error("Could not fetch education data from any candidate path — using hardcoded demo data");
+    // Use hardcoded demo content so the page is functional for a presentation/demo.
     if (educationGrid) {
-        educationGrid.innerHTML = `<p class="error-message" style="text-align: center;">Error al cargar el contenido educativo. Inténtalo de nuevo más tarde.</p>`;
+        const notice = document.createElement('p');
+        notice.style.textAlign = 'center';
+        notice.style.color = '#888';
+        notice.textContent = 'Mostrando contenido demo.';
+        educationGrid.innerHTML = '';
+        educationGrid.appendChild(notice);
     }
-    return [];
+    return HARDCODED_EDUCATION;
 }
 
 /**
