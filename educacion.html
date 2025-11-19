@@ -45,6 +45,80 @@
             <p style="text-align: center; color: #888;">Cargando contenido...</p>
         </div>
 
+    <!-- Inline fallback: if external JS or fetch fails (e.g. on some hosting setups),
+         replace the 'Cargando contenido...' placeholder with demo cards so the
+         demo still shows content. This runs independently of external scripts. -->
+    <script>
+        (function(){
+            const grid = document.getElementById('education-grid');
+            if (!grid) return;
+
+            const DEMO_DATA = [
+                {
+                    slug: 'interes-compuesto',
+                    title: 'Interés Compuesto: La fuerza del tiempo',
+                    image: 'images/educacion/interes-compuesto.jpg',
+                    excerpt: 'Entiende cómo el interés compuesto puede multiplicar tu dinero a lo largo de los años.',
+                    type: 'article'
+                },
+                {
+                    slug: 'invertir-primer-mil',
+                    title: 'Cómo invertir tus primeros $1,000',
+                    image: 'images/educacion/invertir-primer-mil.jpg',
+                    excerpt: 'Guía práctica para comenzar a invertir con poco capital y minimizar riesgos.',
+                    type: 'article'
+                }
+            ];
+
+            function createCardHTML(item){
+                const icon = item.type === 'video' ? '▶️' : '📝';
+                const typeText = item.type === 'video' ? 'Video' : 'Artículo';
+                const articlePath = `educacion/${item.slug}.html`;
+                return `
+                    <a href="${articlePath}" class="card-link">
+                        <div class="education-card">
+                            <div class="card-image-container">
+                                <img src="${item.image}" alt="${item.title}">
+                                <div class="card-overlay">
+                                    <div class="card-content">
+                                        <h3>${item.title}</h3>
+                                        <span class="card-type">${typeText} <span class="card-type-icon">${icon}</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-excerpt">
+                                <p>${item.excerpt}</p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="ver-mas">Ver más &rarr;</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }
+
+            // Wait a short time for external scripts to run. If after that the
+            // grid still hasn't been populated, use the demo content.
+            setTimeout(() => {
+                // If JS already rendered cards, do nothing.
+                if (grid.querySelector('.education-card')) return;
+
+                // If grid contains something other than the original placeholder,
+                // assume it's been handled by other code.
+                const text = (grid.textContent || '').trim();
+                if (text && !/Cargando contenido/i.test(text)) return;
+
+                grid.innerHTML = DEMO_DATA.map(createCardHTML).join('');
+                const note = document.createElement('p');
+                note.style.textAlign = 'center';
+                note.style.color = '#888';
+                note.style.marginTop = '8px';
+                note.textContent = 'Mostrando contenido demo (fallback).';
+                grid.insertBefore(note, grid.firstChild);
+            }, 1200);
+        })();
+    </script>
+
     </main>
 
     <!-- Footer (Simple for now) -->
